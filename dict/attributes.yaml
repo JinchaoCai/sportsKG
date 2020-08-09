@@ -1,0 +1,27 @@
+city:
+  - 城市
+league:
+  - 联盟
+  - 联赛
+stadium:
+  - 球场
+  - 球馆
+  - 场馆
+  - 体育馆
+number:
+  - 号码
+  - 几号
+  - 球衣号
+height:
+  - 高度
+  - 身高
+  - 多高
+weight:
+  - 体重
+  - 重量
+  - 多重
+position:
+  - 位置
+birthdate:
+  - 生日
+  - 出生日
