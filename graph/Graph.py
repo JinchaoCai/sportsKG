@@ -1,6 +1,8 @@
 import os
 import json
+import yaml
 import pandas as pd
+from utils.pd_utils import read_tsv
 from py2neo import Node, Graph, Relationship, NodeMatcher
 
 class SportsGraph:
@@ -17,35 +19,52 @@ class SportsGraph:
             # user=config.neo4j_user,
             # password=config.neo4j_password
         )
-        # self.create_team_nodes()
-        # self.create_athlete_nodes()
+        self.load_relations()
+        self.load_attributes()
+        self.create_node_in_graph()
+        self.create_relation_in_graph()
 
-    def create_team_nodes(self):
-        teams = self.read_tsv('/Users/caijinchao/projects/sportsKG/data/basketball/teams.tsv')
-        for team in teams:
-            node = Node('Team', **team)
-            self.g.create(node)
+    def load_relations(self, file='/Users/caijinchao/projects/sportsKG/dict/relations.yaml'):
+        with open(file, 'r') as f:
+            self.relations = yaml.load(f)
+    
+    def load_attributes(self, file='/Users/caijinchao/projects/sportsKG/dict/attributes.yaml'):
+        with open(file, 'r') as f:
+            self.attributes = yaml.load(f)
 
-    def create_athlete_nodes(self):
+    def create_node_in_graph(self, data_dir='/Users/caijinchao/projects/sportsKG/data/basketball'):
+        for file in os.listdir(data_dir):
+            if not file.endswith('tsv'):
+                continue
+            node_type = file.replace('.tsv', '').lower().capitalize()
+            file = os.path.join(data_dir, file)
+            nodes = read_tsv(file)
+            for node in nodes:
+                for relation in self.relations:
+                    if relation in node:
+                        node.pop(relation)
+                self.g.create(Node(node_type, **node))
+
+    def create_relation_in_graph(self, data_dir='/Users/caijinchao/projects/sportsKG/data/basketball'):
         matcher = NodeMatcher(self.g)
-        athletes = self.read_tsv('/Users/caijinchao/projects/sportsKG/data/basketball/athletes.tsv')
-        for athlete in athletes:
-            if 'team' in athlete:
-                team = athlete.pop('team')
-            team = matcher.match('Team', name=team).first()
-            node = Node('Athlete', **athlete)
-            self.g.create(node)
-            if team:
-                rel = Relationship(node, 'belongsTo', team)
-                self.g.create(rel)
+        for file in os.listdir(data_dir):
+            if not file.endswith('tsv'):
+                continue
+            sub_t = file.replace('.tsv', '').lower().capitalize()
+            file = os.path.join(data_dir, file)
+            nodes = read_tsv(file)
+            for node in nodes:
+                for attr in node:
+                    if attr not in self.relations:
+                        continue
+                    sub = matcher.match(sub_t, name=node['name']).first()
+                    obj_t = attr.lower().capitalize()
+                    obj = matcher.match(obj_t, name=node[attr]).first()
+                    if sub and obj:
+                        self.g.create(Relationship(sub, attr, obj))
 
     def run(self, intent):
         return self.g.run(intent).data()
-
-    @staticmethod
-    def read_tsv(file):
-        df = pd.read_csv(file, sep='\t')
-        return df.to_dict(orient='records')
 
 if __name__ == '__main__':
     g_sports = SportsGraph()
