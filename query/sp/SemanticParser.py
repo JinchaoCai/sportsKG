@@ -53,8 +53,6 @@ class SemanticParser:
                     if alia in query:
                         intent['attribute'].append(attr)
 
-            print(intent)
-
             if len(intent['entity']) == 1 and len(intent['attribute']) == 1:
                 entity = intent['entity'][0]
                 attribute = intent['attribute'][0]
