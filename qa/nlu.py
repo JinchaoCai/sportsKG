@@ -1,5 +1,5 @@
-from query.dc.DomainClassifier import DomainClassifier
-from query.sp.SemanticParser import SemanticParser
+from qa.dc.DomainClassifier import DomainClassifier
+from qa.sp.SemanticParser import SemanticParser
 
 class NLU:
 

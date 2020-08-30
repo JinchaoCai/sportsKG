@@ -1,5 +1,5 @@
-from graph.Graph import SportsGraph
-from query.nlu import NLU
+from kb.Graph import SportsGraph
+from qa.nlu import NLU
 
 class SportsBot:
 

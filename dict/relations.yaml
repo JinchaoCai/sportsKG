@@ -1,6 +1,7 @@
 city:
   - 城市
 team:
+  - 所在
   - 是哪个
   - 是哪支
 league:

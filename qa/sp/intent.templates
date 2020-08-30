@@ -1,0 +1,4 @@
+[^\{\}]*\{ENTITY1\}[^\{\}]*\{ATTRIBUTE1\}[^\{\}]*---MATCH (n:{ENTITY1_TYPE}) where n.name = '{ENTITY1_NAME}' return n.{ATTRIBUTE1_NAME}---1
+[^\{\}]*\{ENTITY1\}[^\{\}]*\{RELATION1\}[^\{\}]*---MATCH (n:{ENTITY1_TYPE})-[r:{RELATION1_NAME}]->(m) where n.name = '{ENTITY1_NAME}' return m.name---1
+[^\{\}]*\{ENTITY1\}[^\{\}]*\{RELATION1\}[^\{\}]*\{ATTRIBUTE1\}[^\{\}]*---MATCH (n:{ENTITY1_TYPE})-[r:{RELATION1_NAME}]->(m) where n.name = '{ENTITY1_NAME}' return m.{ATTRIBUTE1_NAME}---2
+[^\{\}]*\{ENTITY1\}[^\{\}]*\{ATTRIBUTE1\}[^\{\}]*\{ATTRIBUTE2\}[^\{\}]*---MATCH (n:{ENTITY1_TYPE}) where n.name = '{ENTITY1_NAME}' return n.{ATTRIBUTE1_NAME}, n.{ATTRIBUTE2_NAME}---2

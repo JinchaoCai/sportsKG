@@ -14,15 +14,11 @@ class SportsGraph:
             http_port=7474,
             user='neo4j',
             password='admin'
-            # host=config.host,
-            # http_port=config.port,
-            # user=config.neo4j_user,
-            # password=config.neo4j_password
         )
-        self.load_relations()
-        self.load_attributes()
-        self.create_node_in_graph()
-        self.create_relation_in_graph()
+        # self.load_relations()
+        # self.load_attributes()
+        # self.create_node_in_graph()
+        # self.create_relation_in_graph()
 
     def load_relations(self, file='/Users/caijinchao/projects/sportsKG/dict/relations.yaml'):
         with open(file, 'r') as f:
