@@ -48,13 +48,6 @@ class SemanticParser:
         template = query
         d = {}
         if domain == 'sports':
-            # for ent in self.entities.iter(query):
-            #     intent['entity'].append((ent[1][0], ent[1][1]))
-
-            # for attr, alias in self.attributes.items():
-            #     for alia in alias:
-            #         if alia in query:
-            #             intent['attribute'].append(attr)
 
             for i, ent in enumerate(self.entities.iter(query)):
                 template = template.replace(ent[1][2], '{ENTITY'+str(i+1)+'}')
@@ -76,6 +69,7 @@ class SemanticParser:
                         d['ATTRIBUTE'+str(i)+'_NAME'] = attr
             max_score = 0
             max_score_template = None
+            print(template)
             for t in self.templates:
                 if re.match(t[0], template):
                     if int(t[2]) > max_score:
@@ -86,7 +80,7 @@ class SemanticParser:
 
 if __name__ == '__main__':
     parser = SemanticParser()
-    query = '易建联所在球队的体育馆是？'
+    query = '易建联的身高和赵睿的体重是？'
     domain = 'sports'
     entities = parser.entities.iter(query)
     intent = parser.parse(query, domain)
